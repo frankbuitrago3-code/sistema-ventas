@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Iniciar sesión{% endblock %}
+{% block publico %}
+<div class="login-fondo">
+  <form class="login-tarjeta" method="post">
+    <div class="marca marca-grande">
+      <span class="marca-icono" aria-hidden="true">❄</span>
+      <span>{{ nombre_tienda }}</span>
+    </div>
+    <p class="muted">Sistema de ventas e inventario</p>
+    {% include "_mensajes.html" %}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Usuario
+      <input name="usuario" autocomplete="username" required autofocus value="{{ request.form.usuario }}">
+    </label>
+    <label>Contraseña
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-primario btn-bloque" type="submit">Entrar</button>
+  </form>
+</div>
+{% endblock %}

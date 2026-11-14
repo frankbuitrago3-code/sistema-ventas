@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block titulo %}Nueva venta{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Nueva venta</h1>
+    <p class="muted">Añade productos, elige el método de pago y confirma.</p>
+  </div>
+</header>
+
+{% if not productos %}
+<section class="panel vacio">
+  <p>No hay productos con stock disponible.</p>
+  {% if g.usuario.rol == 'admin' %}<a class="btn btn-primario" href="{{ url_for('productos.nuevo') }}">Añadir producto</a>{% endif %}
+</section>
+{% else %}
+<form method="post" id="form-venta" class="rejilla-venta">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <section class="panel">
+    <h2>Productos</h2>
+    <div class="tabla-scroll">
+    <table class="tabla tabla-venta">
+      <thead><tr><th>Producto</th><th class="num">Precio</th><th class="col-cant">Cantidad</th><th class="num">Subtotal</th><th></th></tr></thead>
+      <tbody id="lineas">
+        <tr class="linea">
+          <td>
+            <select name="producto_id" required aria-label="Producto">
+              <option value="">Elige un producto…</option>
+              {% for p in productos %}
+              <option value="{{ p.id }}" data-precio="{{ p.precio_centavos }}" data-stock="{{ p.stock }}">
+                {{ p.nombre }} ({{ p.sku }}) · stock {{ p.stock }}
+              </option>
+              {% endfor %}
+            </select>
+          </td>
+          <td class="num precio">—</td>
+          <td class="col-cant"><input type="number" name="cantidad" min="1" value="1" required aria-label="Cantidad"></td>
+          <td class="num subtotal">—</td>
+          <td><button type="button" class="btn btn-sm btn-ghost quitar" aria-label="Quitar línea">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <button type="button" class="btn btn-ghost" id="agregar">+ Añadir otro producto</button>
+  </section>
+
+  <aside class="panel resumen-venta">
+    <h2>Resumen</h2>
+    <label>Cliente (opcional)
+      <input name="cliente" maxlength="120" placeholder="Cliente mostrador">
+    </label>
+    <fieldset>
+      <legend>Método de pago</legend>
+      {% for clave, texto in metodos.items() %}
+      <label class="opcion"><input type="radio" name="metodo_pago" value="{{ clave }}" {{ 'checked' if loop.first }}> {{ texto }}</label>
+      {% endfor %}
+    </fieldset>
+    <div class="total-venta">
+      <span>Total</span>
+      <strong id="total">$0,00</strong>
+    </div>
+    <button class="btn btn-primario btn-bloque" type="submit">Confirmar venta</button>
+  </aside>
+</form>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/venta.js') }}"></script>
+{% endblock %}

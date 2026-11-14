@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block titulo %}Panel{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Hola, {{ g.usuario.nombre.split(' ')[0] }}</h1>
+    <p class="muted">Resumen de la tienda</p>
+  </div>
+  <a class="btn btn-primario" href="{{ url_for('ventas.nueva') }}">+ Nueva venta</a>
+</header>
+
+<section class="tarjetas-kpi">
+  <article class="kpi">
+    <span class="kpi-etiqueta">Ventas de hoy</span>
+    <strong class="kpi-valor">{{ hoy.total|dinero }}</strong>
+    <span class="kpi-detalle">{{ hoy.ventas }} venta{{ 's' if hoy.ventas != 1 }}</span>
+  </article>
+  <article class="kpi">
+    <span class="kpi-etiqueta">Este mes</span>
+    <strong class="kpi-valor">{{ mes.total|dinero }}</strong>
+    <span class="kpi-detalle">{{ mes.ventas }} ventas · {{ mes.unidades }} unidades</span>
+  </article>
+  <article class="kpi">
+    <span class="kpi-etiqueta">Ticket medio (mes)</span>
+    <strong class="kpi-valor">{{ mes.ticket_medio|dinero }}</strong>
+    <span class="kpi-detalle">por venta</span>
+  </article>
+  <article class="kpi {{ 'kpi-alerta' if stock_bajo }}">
+    <span class="kpi-etiqueta">Stock bajo</span>
+    <strong class="kpi-valor">{{ stock_bajo|length }}</strong>
+    <span class="kpi-detalle"><a href="{{ url_for('productos.listar', filtro='stock-bajo') }}">ver productos</a></span>
+  </article>
+</section>
+
+<div class="rejilla-2">
+  <section class="panel">
+    <h2>Últimos 7 días</h2>
+    <div class="grafico" role="img" aria-label="Ventas por día de los últimos 7 días">
+      {% for d in semana.por_dia %}
+      <div class="barra-col" title="{{ d.dia.strftime('%d/%m') }}: {{ d.total|dinero }}">
+        <span class="barra-valor">{{ d.total|dinero_corto if d.total else '' }}</span>
+        <div class="barra" style="height: {{ [d.porcentaje, 2]|max }}%"></div>
+        <span class="barra-etiqueta">{{ d.dia.strftime('%d/%m') }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Productos con stock bajo</h2>
+    {% if stock_bajo %}
+    <table class="tabla">
+      <thead><tr><th>Producto</th><th class="num">Stock</th><th class="num">Mínimo</th></tr></thead>
+      <tbody>
+      {% for p in stock_bajo %}
+        <tr><td>{{ p.nombre }}</td><td class="num"><span class="etiqueta etiqueta-rojo">{{ p.stock }}</span></td><td class="num">{{ p.stock_minimo }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">Todo el inventario está por encima del mínimo. 👌</p>
+    {% endif %}
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-cabecera">
+    <h2>Ventas recientes</h2>
+    <a href="{{ url_for('ventas.historial') }}">Ver todas →</a>
+  </div>
+  {% include "ventas/_tabla.html" with context %}
+</section>
+{% endblock %}

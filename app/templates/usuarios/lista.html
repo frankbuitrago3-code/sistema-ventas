@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block titulo %}Usuarios{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Usuarios</h1>
+    <p class="muted">Personas con acceso al sistema</p>
+  </div>
+  <a class="btn btn-primario" href="{{ url_for('usuarios.nuevo') }}">+ Nuevo usuario</a>
+</header>
+<section class="panel">
+  <div class="tabla-scroll">
+  <table class="tabla">
+    <thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th class="num">Ventas</th><th>Estado</th><th></th></tr></thead>
+    <tbody>
+    {% for u in usuarios %}
+      <tr class="{{ 'fila-anulada' if not u.activo }}">
+        <td>{{ u.nombre }}</td>
+        <td><code>{{ u.usuario }}</code></td>
+        <td>{{ roles[u.rol] }}</td>
+        <td class="num">{{ u.ventas }}</td>
+        <td><span class="etiqueta {{ 'etiqueta-verde' if u.activo else 'etiqueta-gris' }}">{{ 'Activo' if u.activo else 'Inactivo' }}</span></td>
+        <td class="acciones-fila">
+          {% if u.id != g.usuario.id %}
+          <form method="post" action="{{ url_for('usuarios.cambiar_estado', usuario_id=u.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-sm btn-ghost" type="submit">{{ 'Desactivar' if u.activo else 'Activar' }}</button>
+          </form>
+          {% endif %}
+          <details class="desplegable">
+            <summary class="btn btn-sm btn-ghost">Contraseña</summary>
+            <form method="post" action="{{ url_for('usuarios.cambiar_password', usuario_id=u.id) }}" class="mini-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="password" name="password" minlength="8" required placeholder="Nueva contraseña" aria-label="Nueva contraseña">
+              <button class="btn btn-sm btn-primario" type="submit">Guardar</button>
+            </form>
+          </details>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}

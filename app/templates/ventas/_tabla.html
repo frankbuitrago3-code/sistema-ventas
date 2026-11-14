@@ -1,0 +1,25 @@
+{% set lista = ventas if ventas is defined else recientes %}
+{% if lista %}
+<div class="tabla-scroll">
+<table class="tabla">
+  <thead>
+    <tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Vendedor</th><th>Pago</th><th class="num">Total</th><th>Estado</th></tr>
+  </thead>
+  <tbody>
+  {% for v in lista %}
+    <tr class="{{ 'fila-anulada' if v.estado == 'anulada' }}">
+      <td><a href="{{ url_for('ventas.detalle', venta_id=v.id) }}">#{{ v.id }}</a></td>
+      <td>{{ v.creado_en|fecha }}</td>
+      <td>{{ v.cliente or '—' }}</td>
+      <td>{{ v.vendedor }}</td>
+      <td>{{ metodos[v.metodo_pago] }}</td>
+      <td class="num"><strong>{{ v.total_centavos|dinero }}</strong></td>
+      <td><span class="etiqueta {{ 'etiqueta-verde' if v.estado == 'completada' else 'etiqueta-gris' }}">{{ v.estado|capitalize }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<p class="muted">Todavía no hay ventas.</p>
+{% endif %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}Nuevo usuario{% endblock %}
+{% block contenido %}
+<header class="cabecera"><h1>Nuevo usuario</h1></header>
+<form method="post" class="panel formulario">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="rejilla-campos">
+    <label>Nombre completo
+      <input name="nombre" required maxlength="80" value="{{ datos.nombre }}">
+    </label>
+    <label>Usuario (para entrar)
+      <input name="usuario" required maxlength="30" pattern="[A-Za-z0-9]+" value="{{ datos.usuario }}" autocomplete="off">
+    </label>
+  </div>
+  <div class="rejilla-campos">
+    <label>Contraseña (mínimo 8 caracteres)
+      <input name="password" type="password" minlength="8" required autocomplete="new-password">
+    </label>
+    <label>Rol
+      <select name="rol">
+        {% for clave, texto in roles.items() %}
+        <option value="{{ clave }}" {{ 'selected' if datos.rol == clave or (not datos.rol and clave == 'vendedor') }}>{{ texto }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </div>
+  <div class="acciones">
+    <a class="btn btn-ghost" href="{{ url_for('usuarios.listar') }}">Cancelar</a>
+    <button class="btn btn-primario" type="submit">Crear usuario</button>
+  </div>
+</form>
+{% endblock %}

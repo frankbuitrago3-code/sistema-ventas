@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Error {{ codigo }}{% endblock %}
+{% macro cuerpo() %}
+  <div class="vacio">
+    <p class="error-codigo">{{ codigo }}</p>
+    <p>{{ mensaje }}</p>
+    <a class="btn btn-primario" href="{{ url_for('reportes.panel') }}">Volver al panel</a>
+  </div>
+{% endmacro %}
+{% block contenido %}{{ cuerpo() }}{% endblock %}
+{% block publico %}<div class="login-fondo">{{ cuerpo() }}</div>{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titulo %}Ventas{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Ventas</h1>
+    <p class="muted">{{ 'Últimas 100 ventas de la tienda' if g.usuario.rol == 'admin' else 'Tus últimas 100 ventas' }}</p>
+  </div>
+  <a class="btn btn-primario" href="{{ url_for('ventas.nueva') }}">+ Nueva venta</a>
+</header>
+<nav class="filtros-pestanas">
+  <a href="{{ url_for('ventas.historial') }}" class="{{ 'activo' if not estado }}">Todas</a>
+  <a href="{{ url_for('ventas.historial', estado='completada') }}" class="{{ 'activo' if estado == 'completada' }}">Completadas</a>
+  <a href="{{ url_for('ventas.historial', estado='anulada') }}" class="{{ 'activo' if estado == 'anulada' }}">Anuladas</a>
+</nav>
+<section class="panel">
+  {% include "ventas/_tabla.html" with context %}
+</section>
+{% endblock %}

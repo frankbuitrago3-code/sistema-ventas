@@ -1,0 +1,18 @@
+# Entorno y dependencias
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Base de datos y configuración local (nunca subir)
+instance/
+*.sqlite
+*.db
+.env
+
+# Herramientas
+.pytest_cache/
+.coverage
+htmlcov/
+.vscode/
+.idea/

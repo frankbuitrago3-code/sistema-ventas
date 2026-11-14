@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}{% endblock %} · {{ nombre_tienda }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+{% if g.usuario %}
+<div class="layout">
+  <aside class="sidebar">
+    <div class="marca">
+      <span class="marca-icono" aria-hidden="true">❄</span>
+      <span>{{ nombre_tienda }}</span>
+    </div>
+    <nav>
+      {% set ep = request.endpoint or '' %}
+      <a href="{{ url_for('reportes.panel') }}" class="{{ 'activo' if ep == 'reportes.panel' }}">Panel</a>
+      <a href="{{ url_for('ventas.nueva') }}" class="{{ 'activo' if ep == 'ventas.nueva' }}">Nueva venta</a>
+      <a href="{{ url_for('ventas.historial') }}" class="{{ 'activo' if ep in ('ventas.historial', 'ventas.detalle') }}">Ventas</a>
+      <a href="{{ url_for('productos.listar') }}" class="{{ 'activo' if ep.startswith('productos.') }}">Inventario</a>
+      {% if g.usuario.rol == 'admin' %}
+      <a href="{{ url_for('reportes.reportes') }}" class="{{ 'activo' if ep == 'reportes.reportes' }}">Reportes</a>
+      <a href="{{ url_for('usuarios.listar') }}" class="{{ 'activo' if ep.startswith('usuarios.') }}">Usuarios</a>
+      {% endif %}
+    </nav>
+    <div class="sesion">
+      <div>
+        <strong>{{ g.usuario.nombre }}</strong>
+        <small>{{ 'Administrador' if g.usuario.rol == 'admin' else 'Vendedor' }}</small>
+      </div>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-ghost" type="submit">Salir</button>
+      </form>
+    </div>
+  </aside>
+  <main class="contenido">
+    {% include "_mensajes.html" %}
+    {% block contenido %}{% endblock %}
+  </main>
+</div>
+{% else %}
+  {% block publico %}{% endblock %}
+{% endif %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

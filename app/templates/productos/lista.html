@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block titulo %}Inventario{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Inventario</h1>
+    <p class="muted">{{ total }} producto{{ 's' if total != 1 }}</p>
+  </div>
+  {% if g.usuario.rol == 'admin' %}
+  <a class="btn btn-primario" href="{{ url_for('productos.nuevo') }}">+ Nuevo producto</a>
+  {% endif %}
+</header>
+
+<form class="filtros" method="get">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar por nombre o código…" aria-label="Buscar">
+  <select name="categoria" aria-label="Categoría">
+    <option value="">Todas las categorías</option>
+    {% for c in categorias %}<option {{ 'selected' if c == categoria }}>{{ c }}</option>{% endfor %}
+  </select>
+  <label class="opcion"><input type="checkbox" name="filtro" value="stock-bajo" {{ 'checked' if filtro == 'stock-bajo' }}> Solo stock bajo</label>
+  <button class="btn btn-ghost" type="submit">Filtrar</button>
+</form>
+
+<section class="panel">
+  {% if productos %}
+  <div class="tabla-scroll">
+  <table class="tabla">
+    <thead>
+      <tr><th>Código</th><th>Producto</th><th>Categoría</th><th class="num">Precio</th><th class="num">Stock</th>{% if g.usuario.rol == 'admin' %}<th></th>{% endif %}</tr>
+    </thead>
+    <tbody>
+    {% for p in productos %}
+      <tr>
+        <td><code>{{ p.sku }}</code></td>
+        <td>{{ p.nombre }}</td>
+        <td><span class="etiqueta">{{ p.categoria }}</span></td>
+        <td class="num">{{ p.precio_centavos|dinero }}</td>
+        <td class="num">
+          <span class="etiqueta {{ 'etiqueta-rojo' if p.stock <= p.stock_minimo else 'etiqueta-verde' }}">{{ p.stock }}</span>
+        </td>
+        {% if g.usuario.rol == 'admin' %}
+        <td class="acciones-fila">
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('productos.editar', producto_id=p.id) }}">Editar</a>
+          <form method="post" action="{{ url_for('productos.eliminar', producto_id=p.id) }}"
+                onsubmit="return confirm('¿Eliminar «{{ p.nombre }}» del inventario?')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-sm btn-ghost texto-peligro" type="submit">Eliminar</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% if paginas > 1 %}
+  <nav class="paginacion">
+    {% for n in range(1, paginas + 1) %}
+      <a href="{{ url_for('productos.listar', q=q, categoria=categoria, filtro=filtro, pagina=n) }}" class="{{ 'activo' if n == pagina }}">{{ n }}</a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+  {% else %}
+  <p class="muted">No hay productos que coincidan con la búsqueda.</p>
+  {% endif %}
+</section>
+{% endblock %}

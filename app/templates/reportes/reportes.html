@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titulo %}Reportes{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <div>
+    <h1>Reportes de ventas</h1>
+    <p class="muted">Del {{ desde.strftime('%d/%m/%Y') }} al {{ hasta.strftime('%d/%m/%Y') }}</p>
+  </div>
+  <a class="btn btn-ghost" href="{{ url_for('reportes.exportar_csv', desde=desde.isoformat(), hasta=hasta.isoformat()) }}">⬇ Exportar CSV</a>
+</header>
+
+<form class="filtros" method="get">
+  <label>Desde <input type="date" name="desde" value="{{ desde.isoformat() }}"></label>
+  <label>Hasta <input type="date" name="hasta" value="{{ hasta.isoformat() }}"></label>
+  <button class="btn btn-ghost" type="submit">Aplicar</button>
+</form>
+
+<section class="tarjetas-kpi">
+  <article class="kpi"><span class="kpi-etiqueta">Ingresos</span><strong class="kpi-valor">{{ r.total|dinero }}</strong></article>
+  <article class="kpi"><span class="kpi-etiqueta">Ventas</span><strong class="kpi-valor">{{ r.ventas }}</strong></article>
+  <article class="kpi"><span class="kpi-etiqueta">Unidades vendidas</span><strong class="kpi-valor">{{ r.unidades }}</strong></article>
+  <article class="kpi"><span class="kpi-etiqueta">Ticket medio</span><strong class="kpi-valor">{{ r.ticket_medio|dinero }}</strong></article>
+</section>
+
+<section class="panel">
+  <h2>Ingresos por día</h2>
+  <div class="grafico grafico-ancho" role="img" aria-label="Ingresos por día">
+    {% for d in r.por_dia %}
+    <div class="barra-col" title="{{ d.dia.strftime('%d/%m') }}: {{ d.total|dinero }}">
+      <div class="barra" style="height: {{ [d.porcentaje, 1]|max }}%"></div>
+      {% if r.por_dia|length <= 31 %}<span class="barra-etiqueta">{{ d.dia.strftime('%d') }}</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="rejilla-2">
+  <section class="panel">
+    <h2>Productos más vendidos</h2>
+    {% if r.top_productos %}
+    <table class="tabla">
+      <thead><tr><th>Producto</th><th class="num">Uds.</th><th class="num">Ingresos</th></tr></thead>
+      <tbody>
+      {% for p in r.top_productos %}
+        <tr><td>{{ p.nombre_producto }}</td><td class="num">{{ p.unidades }}</td><td class="num">{{ p.total|dinero }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}<p class="muted">Sin ventas en este periodo.</p>{% endif %}
+  </section>
+  <section class="panel">
+    <h2>Por método de pago</h2>
+    {% if r.por_metodo %}
+    <ul class="lista-barras">
+      {% for m in r.por_metodo %}
+      <li>
+        <div class="lista-barras-texto"><span>{{ metodos[m.metodo_pago] }} · {{ m.ventas }} ventas</span><strong>{{ m.total|dinero }}</strong></div>
+        <div class="progreso"><div style="width: {{ (m.total * 100 / r.total)|round(1) if r.total else 0 }}%"></div></div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}<p class="muted">Sin ventas en este periodo.</p>{% endif %}
+  </section>
+</div>
+{% endblock %}

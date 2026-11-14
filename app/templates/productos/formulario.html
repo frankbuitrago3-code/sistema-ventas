@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar producto' if producto else 'Nuevo producto' }}{% endblock %}
+{% block contenido %}
+<header class="cabecera">
+  <h1>{{ 'Editar «' ~ producto.nombre ~ '»' if producto else 'Nuevo producto' }}</h1>
+</header>
+<form method="post" class="panel formulario">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="rejilla-campos">
+    <label>Código (SKU)
+      <input name="sku" required maxlength="30" value="{{ datos.sku }}" placeholder="CMP-001">
+    </label>
+    <label>Categoría
+      <input name="categoria" maxlength="50" value="{{ datos.categoria }}" placeholder="Compresores">
+    </label>
+  </div>
+  <label>Nombre
+    <input name="nombre" required maxlength="120" value="{{ datos.nombre }}" placeholder="Compresor 1/3 HP R134a">
+  </label>
+  <div class="rejilla-campos tres">
+    <label>Precio
+      <input name="precio" required inputmode="decimal" value="{{ datos.precio }}" placeholder="185000,00">
+    </label>
+    <label>Stock
+      <input name="stock" type="number" min="0" required value="{{ datos.stock }}">
+    </label>
+    <label>Stock mínimo
+      <input name="stock_minimo" type="number" min="0" required value="{{ datos.get('stock_minimo', 5) }}">
+    </label>
+  </div>
+  <div class="acciones">
+    <a class="btn btn-ghost" href="{{ url_for('productos.listar') }}">Cancelar</a>
+    <button class="btn btn-primario" type="submit">Guardar</button>
+  </div>
+</form>
+{% endblock %}
