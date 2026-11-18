@@ -100,6 +100,7 @@ def cargar_datos_demo(dias: int = 30, semilla: int = 7) -> None:
     # Dejar algunos productos con stock bajo para que se vean las alertas.
     for sku, *_resto, stock, _minimo in PRODUCTOS_DEMO:
         conexion.execute("UPDATE productos SET stock = ? WHERE sku = ?", (stock, sku))
+    conexion.execute("INSERT OR IGNORE INTO ajustes (clave, valor) VALUES ('nombre_tienda', 'FríoTech · Refrigeración')")
     conexion.commit()
 
 

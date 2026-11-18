@@ -8,18 +8,18 @@
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="rejilla-campos">
     <label>Código (SKU)
-      <input name="sku" required maxlength="30" value="{{ datos.sku }}" placeholder="CMP-001">
+      <input name="sku" required maxlength="30" value="{{ datos.sku }}" placeholder="Ej.: P-001">
     </label>
     <label>Categoría
-      <input name="categoria" maxlength="50" value="{{ datos.categoria }}" placeholder="Compresores">
+      <input name="categoria" maxlength="50" value="{{ datos.categoria }}" placeholder="Ej.: Bebidas">
     </label>
   </div>
   <label>Nombre
-    <input name="nombre" required maxlength="120" value="{{ datos.nombre }}" placeholder="Compresor 1/3 HP R134a">
+    <input name="nombre" required maxlength="120" value="{{ datos.nombre }}" placeholder="Ej.: Refresco de cola 2 L">
   </label>
   <div class="rejilla-campos tres">
     <label>Precio
-      <input name="precio" required inputmode="decimal" value="{{ datos.precio }}" placeholder="185000,00">
+      <input name="precio" required inputmode="decimal" value="{{ datos.precio }}" placeholder="Ej.: 2,50">
     </label>
     <label>Stock
       <input name="stock" type="number" min="0" required value="{{ datos.stock }}">

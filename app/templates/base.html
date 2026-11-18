@@ -11,7 +11,7 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="marca">
-      <span class="marca-icono" aria-hidden="true">❄</span>
+      <span class="marca-icono" aria-hidden="true">{{ (nombre_tienda or "S")[:1]|upper }}</span>
       <span>{{ nombre_tienda }}</span>
     </div>
     <nav>
@@ -23,6 +23,7 @@
       {% if g.usuario.rol == 'admin' %}
       <a href="{{ url_for('reportes.reportes') }}" class="{{ 'activo' if ep == 'reportes.reportes' }}">Reportes</a>
       <a href="{{ url_for('usuarios.listar') }}" class="{{ 'activo' if ep.startswith('usuarios.') }}">Usuarios</a>
+      <a href="{{ url_for('configuracion.ajustes') }}" class="{{ 'activo' if ep.startswith('configuracion.') }}">Ajustes</a>
       {% endif %}
     </nav>
     <div class="sesion">

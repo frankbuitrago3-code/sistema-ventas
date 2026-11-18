@@ -51,7 +51,7 @@ Aplicación web para gestionar las **ventas y el inventario** de una tienda de r
 
 **Backend:** Python 3 · Flask 3 · SQLite  
 **Frontend:** HTML5 · CSS3 (Grid/Flexbox, sin frameworks) · JavaScript  
-**Calidad:** pytest (24 pruebas) · GitHub Actions (CI en Python 3.11, 3.12 y 3.13)
+**Calidad:** pytest (35 pruebas) · GitHub Actions (CI en Python 3.11, 3.12 y 3.13)
 
 ## Estructura
 
@@ -104,6 +104,21 @@ Abre <http://127.0.0.1:5000>. Con los datos de demostración puedes entrar como:
 | `vendedor` | `vendedor123` | Vendedor |
 
 > Los usuarios de demostración son solo para probar en local. En producción, crea tu propio administrador y define la variable `SECRET_KEY` (ver `.env.example`).
+
+### Instalador para Windows (para entregar a un negocio)
+
+Crea un único `SistemaDeVentas.exe` que no necesita Python instalado:
+
+```bash
+pip install -r requirements-build.txt
+pyinstaller --noconfirm --clean --distpath empaquetado/dist --workpath empaquetado/build empaquetado/SistemaDeVentas.spec
+```
+
+- La primera vez que se abre, muestra una **pantalla de configuración inicial**: el negocio escribe su nombre y crea su usuario administrador. No hay usuarios ni datos de ejemplo.
+- Los datos se guardan en `%LOCALAPPDATA%\SistemaVentas`, separados del programa: se puede reemplazar el `.exe` por una versión nueva sin perder nada.
+- La clave secreta de la sesión se genera automáticamente en el primer arranque.
+- El sistema solo escucha en `127.0.0.1` (no es accesible desde otros equipos de la red).
+- Entrega el `.exe` junto con `empaquetado/INSTRUCCIONES.txt`.
 
 ### Pruebas
 

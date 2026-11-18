@@ -4,7 +4,7 @@
 <div class="login-fondo">
   <form class="login-tarjeta" method="post">
     <div class="marca marca-grande">
-      <span class="marca-icono" aria-hidden="true">❄</span>
+      <span class="marca-icono" aria-hidden="true">{{ (nombre_tienda or "S")[:1]|upper }}</span>
       <span>{{ nombre_tienda }}</span>
     </div>
     <p class="muted">Sistema de ventas e inventario</p>

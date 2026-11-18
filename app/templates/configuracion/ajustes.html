@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titulo %}Ajustes{% endblock %}
+{% block contenido %}
+<header class="cabecera"><h1>Ajustes</h1></header>
+
+<form method="post" class="panel formulario">
+  <h2>Tu negocio</h2>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Nombre del negocio
+    <input name="nombre_tienda" required maxlength="60" value="{{ nombre_tienda }}">
+  </label>
+  <div class="acciones">
+    <button class="btn btn-primario" type="submit">Guardar</button>
+  </div>
+</form>
+
+<section class="panel formulario">
+  <h2>Copia de seguridad</h2>
+  <p class="muted">Descarga una copia con todos tus productos, ventas y usuarios. Hazlo al menos una vez por
+    semana y guárdala fuera de esta computadora (en un pendrive, en tu correo o en Google Drive).
+    Si la computadora se daña, con esa copia se recupera todo.</p>
+  <div class="acciones">
+    <a class="btn btn-primario" href="{{ url_for('configuracion.copia_seguridad') }}">⬇ Descargar copia de seguridad</a>
+  </div>
+</section>
+{% endblock %}

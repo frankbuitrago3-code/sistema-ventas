@@ -16,3 +16,7 @@ instance/
 htmlcov/
 .vscode/
 .idea/
+
+# Instalador de Windows (se genera con PyInstaller)
+empaquetado/build/
+empaquetado/dist/

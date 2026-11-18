@@ -46,6 +46,12 @@ CREATE TABLE IF NOT EXISTS venta_items (
     subtotal_centavos        INTEGER NOT NULL CHECK (subtotal_centavos >= 0)
 );
 
+-- Ajustes del negocio (nombre de la tienda, etc.).
+CREATE TABLE IF NOT EXISTS ajustes (
+    clave TEXT PRIMARY KEY,
+    valor TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_ventas_fecha      ON ventas (creado_en);
 CREATE INDEX IF NOT EXISTS idx_items_venta       ON venta_items (venta_id);
 CREATE INDEX IF NOT EXISTS idx_items_producto    ON venta_items (producto_id);

@@ -1,0 +1,46 @@
+=====================================================
+   SISTEMA DE VENTAS E INVENTARIO  -  Cómo empezar
+=====================================================
+
+1) PREPARAR EL PROGRAMA
+   - Haz clic derecho sobre este archivo .zip y elige "Extraer todo".
+   - Copia "SistemaDeVentas.exe" al Escritorio (o donde quieras tenerlo).
+
+2) ABRIRLO POR PRIMERA VEZ
+   - Haz doble clic en "SistemaDeVentas.exe".
+   - Es posible que Windows muestre un aviso azul que dice
+     "Windows protegió su PC". Es normal en programas nuevos.
+     Pulsa "Más información" y luego "Ejecutar de todas formas".
+   - Se abrirá una ventana negra y, a los pocos segundos, el navegador
+     con el sistema.
+
+3) CONFIGURARLO (solo la primera vez)
+   - Escribe el nombre de tu negocio, tu nombre, un usuario y una
+     contraseña. ¡Apúntalos en un lugar seguro!
+   - Listo: ya puedes registrar tus productos en "Inventario" y
+     vender desde "Nueva venta".
+
+4) USO DIARIO
+   - Abre "SistemaDeVentas.exe" cada vez que quieras usar el sistema.
+   - NO CIERRES LA VENTANA NEGRA mientras lo usas (puedes minimizarla).
+     Si la cierras, el sistema se apaga. Tus datos NO se pierden.
+   - Si cierras el navegador sin querer, vuelve a hacer doble clic en
+     el programa y se abrirá otra vez.
+
+5) VENDEDORES
+   - Desde el menú "Usuarios" puedes crear un usuario para cada
+     vendedor. Los vendedores pueden vender, pero no pueden cambiar
+     precios, borrar productos ni anular ventas.
+
+6) COPIA DE SEGURIDAD (¡importante!)
+   - Una vez por semana entra en "Ajustes" y pulsa
+     "Descargar copia de seguridad".
+   - Guarda ese archivo fuera de la computadora: en tu correo,
+     Google Drive o un pendrive. Si la computadora se daña,
+     con esa copia se recupera todo.
+
+-----------------------------------------------------
+¿Dudas o quieres usar el sistema desde tu teléfono?
+Escríbenos y te ayudamos.
+                                          smartbyte
+-----------------------------------------------------

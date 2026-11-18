@@ -61,7 +61,11 @@
   </nav>
   {% endif %}
   {% else %}
+  {% if request.args.get('q') or request.args.get('categoria') or request.args.get('filtro') %}
   <p class="muted">No hay productos que coincidan con la búsqueda.</p>
+  {% else %}
+  <p class="muted">Todavía no tienes productos. Pulsa <strong>+ Nuevo producto</strong> para registrar el primero.</p>
+  {% endif %}
   {% endif %}
 </section>
 {% endblock %}

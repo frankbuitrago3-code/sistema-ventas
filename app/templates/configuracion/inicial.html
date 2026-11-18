@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}Bienvenido{% endblock %}
+{% block publico %}
+<div class="login-fondo">
+  <form class="login-tarjeta tarjeta-ancha" method="post">
+    <div class="marca marca-grande">
+      <span class="marca-icono" aria-hidden="true">$</span>
+      <span>¡Bienvenido!</span>
+    </div>
+    <p class="muted">Vamos a dejar listo tu sistema de ventas. Solo se hace una vez.</p>
+    {% include "_mensajes.html" %}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label>Nombre de tu negocio
+      <input name="nombre_tienda" required maxlength="60" autofocus
+             placeholder="Ej.: Bodega La Esquina" value="{{ request.form.nombre_tienda }}">
+    </label>
+    <label>Tu nombre
+      <input name="nombre" required maxlength="80" autocomplete="name" value="{{ request.form.nombre }}">
+    </label>
+    <label>Usuario para entrar
+      <input name="usuario" required maxlength="40" pattern="[A-Za-z0-9]+" autocomplete="username"
+             title="Solo letras y números, sin espacios" placeholder="Ej.: maria" value="{{ request.form.usuario }}">
+    </label>
+    <label>Contraseña (mínimo 8 caracteres)
+      <input name="password" type="password" minlength="8" required autocomplete="new-password">
+    </label>
+    <label>Repite la contraseña
+      <input name="password2" type="password" minlength="8" required autocomplete="new-password">
+    </label>
+    <p class="muted nota">Apunta tu usuario y contraseña en un lugar seguro. Serás el administrador: podrás crear
+      usuarios para tus vendedores desde el menú <strong>Usuarios</strong>.</p>
+    <button class="btn btn-primario btn-bloque" type="submit">Empezar</button>
+  </form>
+</div>
+{% endblock %}
